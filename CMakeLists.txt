@@ -5,23 +5,19 @@ cmake_minimum_required (VERSION 3.21)
 
 project (graphitti-v2 LANGUAGES C CXX)
 
-include(CheckLanguage)
-
-if (CMAKE_CUDA_STANDARD)
-	message(STATUS "CUDA Standard defined in Preset - checking for CUDA supported compiler...")
-	check_language(CUDA)
-	if (CMAKE_CUDA_HOST_COMPILER)
-		message(STATUS "CUDA supported compiler found. Enabling...")
-		enable_language(CUDA)
-	else()
-		message(STATUS "CUDA supported compiler not found. Not enabling...")
-	endif()
-endif()
-
 find_package(unofficial-sqlite3 CONFIG REQUIRED)
 
 # Add source to this project's executable.
 add_executable (graphitti-cmake-vs22 "graphitti-cmake-vs22.cpp" "graphitti-cmake-vs22.h")
+target_compile_options(graphitti-cmake-vs22 PUBLIC -fsycl -fsycl-targets=nvptx64-nvidia-cuda)
+# includes 
+target_include_directories(graphitti-cmake-vs22 PRIVATE $ENV{SYCL_LLVM_DIR}/include/sycl)
 
+# library directories
+target_link_directories(graphitti-cmake-vs22 PRIVATE $ENV{SYCL_LLVM_DIR}/lib)
+# libraries
 target_link_libraries(graphitti-cmake-vs22 PRIVATE unofficial::sqlite3::sqlite3)
+target_link_libraries(graphitti-cmake-vs22 PRIVATE sycl)
+target_link_options(graphitti-cmake-vs22 PUBLIC -fsycl -fsycl-targets=nvptx64-nvidia-cuda)
+
 # TODO: Add tests and install targets if needed.

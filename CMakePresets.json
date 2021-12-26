@@ -7,10 +7,12 @@
       "hidden": true,
       "generator": "Ninja",
       "toolchainFile": "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake",
-      "binaryDir": "${sourceDir}/build/${presetName}", // make this ideally ./build/${platform}/{CUDA/noCUDA}/{Debug/Release}
+      "binaryDir": "${sourceDir}/build/${presetName}",
       "cacheVariables": {
         "CMAKE_CXX_STANDARD": "17",
-        "CMAKE_CXX_STANDARD_REQUIRED": true
+        "CMAKE_CXX_STANDARD_REQUIRED": true,
+        "CMAKE_C_COMPILER": "$env{SYCL_CLANG_DIR}/clang.exe",
+        "CMAKE_CXX_COMPILER": "$env{SYCL_CLANG_DIR}/clang++.exe"
       }
     },
     {
@@ -19,7 +21,7 @@
       "hidden": true,
       "inherits": "base",
       "cacheVariables": {
-        "CMAKE_CUDA_COMPILER": "NVCC", 
+        "CMAKE_CUDA_COMPILER": "NVCC",
         "CMAKE_CUDA_STANDARD": "17"
       }
     },
@@ -33,7 +35,19 @@
         "VCPKG_HOST_TARGET": "x64-windows"
       },
       "environment": {
-        "VCPKG_ROOT": "C:/Users/$env{username}/Documents/vcpkg" // please change this to your respective vcpkg installation dir 
+        "VCPKG_ROOT": "C:/Users/$env{username}/Documents/vcpkg",
+        "SYCL_LLVM_DIR": "C:/Users/$env{username}/Documents/Github/sycl_workspace/llvm/build",
+        "SYCL_CLANG_DIR": "$env{SYCL_LLVM_DIR}/bin"
+      }
+    },
+    {
+      "name": "windows-msvc-base",
+      "description": "common inherited configuration for enabling MSVC toolsets; unused on its own.",
+      "hidden": true,
+      "inherits": "windows-base",
+      "architecture": {
+        "value": "x64",
+        "strategy": "external"
       },
       "vendor": { "microsoft.com/VisualStudioSettings/CMake/1.0": { "hostOS": [ "Windows" ] } }
     },
@@ -49,93 +63,39 @@
         "VCPKG_ROOT": "$env{HOME}/vcpkg"
       },
       "vendor": {
-        "microsoft.com/VisualStudioSettings/CMake/1.0": { "hostOS": ["Linux"] },
+        "microsoft.com/VisualStudioSettings/CMake/1.0": { "hostOS": [ "Linux" ] },
         "microsoft.com/VisualStudioRemoteSettings/CMake/1.0": { "sourceDir": "$env{HOME}/.vs/$ms{projectDirName}" }
       }
     },
-      {
-        "name": "debug-base",
-        "description": "common inherited configuration for debug projects; unused on its own.",
-        "hidden": true,
-        "inherits": "base",
-        "cacheVariables": {
-          "CMAKE_BUILD_TYPE": "Debug"
-        }
-      },
+    {
+      "name": "debug-base",
+      "description": "common inherited configuration for debug projects; unused on its own.",
+      "hidden": true,
+      "inherits": "base",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug"
+      }
+    },
     {
       "name": "windows-debug",
+      "displayName":  "Windows Debug",
       "description": "Windows x64 Debug build (no CUDA).",
       "inherits": [ "windows-base", "debug-base" ]
     },
     {
+      "name": "windows-vs22-debug",
+      "description": "Windows x64 Debug build with VS22",
+      "inherits":  ["windows-msvc-base", "debug-base"] 
+    },
+    {
       "name": "windows-debug-cuda",
       "description": "Windows x64 Debug build (with CUDA).",
-      "inherits": ["windows-base", "debug-base", "cuda-base"] 
+      "inherits": [ "windows-base", "debug-base", "cuda-base" ]
     },
     {
       "name": "linux-debug",
       "description": "Linux x64 Debug build (no CUDA).",
-      "inherits":  ["linux-base", "debug-base"] 
-    },
-      {
-        "name": "linux-default",
-        "displayName": "Linux Debug",
-        "description": "Target the Windows Subsystem for Linux (WSL) or a remote Linux system.",
-        "generator": "Ninja",
-        "binaryDir": "${sourceDir}/out/build/${presetName}",
-        "cacheVariables": {
-          "CMAKE_BUILD_TYPE": "Debug",
-          "CMAKE_INSTALL_PREFIX": "${sourceDir}/out/install/${presetName}",
-          "CMAKE_TOOLCHAIN_FILE": {
-            "value": "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake",
-            "type": "FILEPATH"
-          }
-        },
-        "environment": {
-          "VCPKG_ROOT": "$env{HOME}/vcpkg"
-        },
-        "vendor": {
-          "microsoft.com/VisualStudioSettings/CMake/1.0": { "hostOS": [ "Linux" ] },
-          "microsoft.com/VisualStudioRemoteSettings/CMake/1.0": { "sourceDir": "$env{HOME}/.vs/$ms{projectDirName}" }
-        }
-      },
-      {
-        "name": "macos-default (UNUSED)",
-        "displayName": "macOS Debug",
-        "description": "Target a remote macOS system with Ninja",
-        "generator": "Ninja",
-        "binaryDir": "${sourceDir}/out/build/${presetName}",
-        "cacheVariables": {
-          "CMAKE_BUILD_TYPE": "Debug",
-          "CMAKE_INSTALL_PREFIX": "${sourceDir}/out/install/${presetName}"
-        },
-        "vendor": {
-          "microsoft.com/VisualStudioSettings/CMake/1.0": { "hostOS": [ "macOS" ] },
-          "microsoft.com/VisualStudioRemoteSettings/CMake/1.0": { "sourceDir": "$env{HOME}/.vs/$ms{projectDirName}" }
-        }
-      },
-      {
-        "name": "windows-default",
-        "displayName": "Windows x64 Debug",
-        "description": "Target Windows with the Visual Studio development environment.",
-        "generator": "Visual Studio 17 2022",
-        "binaryDir": "${sourceDir}/out/build/${presetName}",
-        "architecture": {
-          "value": "x64",
-          "strategy": "external"
-        },
-        "cacheVariables": {
-          "CMAKE_BUILD_TYPE": "Debug",
-          "CMAKE_INSTALL_PREFIX": "${sourceDir}/out/install/${presetName}",
-          "CMAKE_TOOLCHAIN_FILE": {
-            "value": "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake",
-            "type": "FILEPATH"
-          }
-        },
-        "environment": {
-          "VCPKG_ROOT": "C:/Users/$env{username}/Documents/vcpkg"
-        },
-        "vendor": { "microsoft.com/VisualStudioSettings/CMake/1.0": { "hostOS": [ "Windows" ] } }
-      }
+      "inherits": [ "linux-base", "debug-base" ]
+    }
   ]
 }
