@@ -1,0 +1,14 @@
+{
+  "name": "graphitti",
+  "version-string": "0.1.0",
+  "dependencies": [
+    "cxxopts",
+    "gtest",
+    {
+      "name": "hdf5",
+      "features": [ "cpp", "szip", "threadsafe", "tools", "utils", "zlib" ]
+    },
+    "spdlog",
+    "flatbuffers"
+  ]
+}

@@ -5,11 +5,15 @@
 #include <iostream>
 #include <string>
 #include <core_test.hpp>
+#include <veque.hpp>
+#include <filesystem>
 #if FPGA || FPGA_EMULATOR
 #include <sycl/ext/intel/fpga_extensions.hpp>
 #endif
 
 using namespace sycl;
+
+
 
 class CUDASelector : public sycl::device_selector {
 	public:
@@ -76,6 +80,9 @@ int main(int argc, char* argv[]) {
 	// Change array_size if it was passed as argument
 	if (argc > 1)
 		array_size = std::stoi(argv[1]);
+
+	veque::veque<int> test_veque;
+
 	spdlog::info("whats up my dudes");
 	cxxopts::Options parser("graphitti", "an accelerated general graph simulator");
 	parser.add_options()
