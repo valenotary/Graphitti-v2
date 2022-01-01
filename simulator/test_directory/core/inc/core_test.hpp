@@ -1,0 +1,8 @@
+#ifndef TEST_DIRECTORY_CORE_CORE_TEST_HPP
+#define TEST_DIRECTORY_CORE_CORE_TEST_HPP
+
+
+int return5();
+
+
+#endif 

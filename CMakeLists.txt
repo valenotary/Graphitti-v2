@@ -1,23 +1,45 @@
-﻿# CMakeList.txt : CMake project for graphitti-cmake-vs22, include source and define
-# project specific logic here.
-#
-cmake_minimum_required (VERSION 3.21)
+﻿cmake_minimum_required (VERSION 3.21)
 
 project (graphitti-v2 LANGUAGES C CXX)
 
-find_package(unofficial-sqlite3 CONFIG REQUIRED)
+# vcpkg dependencies
+find_package(cxxopts CONFIG REQUIRED) # CLI argument parsing 
+find_package(flatbuffers CONFIG REQUIRED) # serialization 
+find_package(hdf5 CONFIG REQUIRED) # runtime data output format 
+find_package(spdlog CONFIG REQUIRED) # logging 
 
 # Add source to this project's executable.
-add_executable (graphitti-cmake-vs22 "graphitti-cmake-vs22.cpp" "graphitti-cmake-vs22.h")
-target_compile_options(graphitti-cmake-vs22 PUBLIC -fsycl -fsycl-targets=nvptx64-nvidia-cuda)
+add_executable (graphitti simulator/main/src/main.cpp)
+target_compile_options(graphitti PUBLIC -fsycl -fsycl-targets=nvptx64-nvidia-cuda -frelaxed-template-template-args)
+target_link_options(graphitti PUBLIC -fsycl -fsycl-targets=nvptx64-nvidia-cuda -frelaxed-template-template-args)
+
+# subdirectories 
+add_subdirectory(./simulator/test_directory)
+
 # includes 
-target_include_directories(graphitti-cmake-vs22 PRIVATE $ENV{SYCL_LLVM_DIR}/include/sycl)
+target_include_directories(graphitti PRIVATE
+	$ENV{SYCL_LLVM_DIR}/include/sycl
+)
 
 # library directories
-target_link_directories(graphitti-cmake-vs22 PRIVATE $ENV{SYCL_LLVM_DIR}/lib)
-# libraries
-target_link_libraries(graphitti-cmake-vs22 PRIVATE unofficial::sqlite3::sqlite3)
-target_link_libraries(graphitti-cmake-vs22 PRIVATE sycl)
-target_link_options(graphitti-cmake-vs22 PUBLIC -fsycl -fsycl-targets=nvptx64-nvidia-cuda)
+target_link_directories(graphitti PRIVATE 
+	$ENV{SYCL_LLVM_DIR}/lib # for heterogeneous programming 
+)
+
+# project sublibraries
+
+#  libraries
+target_link_libraries(graphitti PRIVATE 
+	# dependencies first 
+	sycl # for heterogeneous programming 
+	cxxopts::cxxopts # CLI argument parsing 
+	flatbuffers::flatbuffers # serialization 
+	hdf5::hdf5-shared hdf5::hdf5_hl-shared hdf5::hdf5_cpp-shared hdf5::hdf5_tools-shared # runtime data output format 
+	spdlog::spdlog spdlog::spdlog_header_only # logging 
+
+	# simulator modules second 
+	test_directory
+)
+
 
 # TODO: Add tests and install targets if needed.
