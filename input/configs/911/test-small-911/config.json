@@ -1,0 +1,63 @@
+{
+    "GraphSimParams": {
+        "SimInfoParams": {
+            "PoolSize": {
+                "x": 10,
+                "y": 10,
+                "z": 1
+            },
+            "SimParams": {
+                "epochDuration": 100.0,
+                "numEpochs": 2
+            },
+            "SimConfig": {
+                "maxFiringRate": 100,
+                "maxEdgesPerVertex": 88
+            },
+            "RNGConfig": {
+                "InitRNGSeed": 1,
+                "NoiseRNGSeed": {
+                    "type": "norm",
+                    "value": 1
+                }
+            }
+        },
+        "ModelParams": {
+            "VerticesParams": {
+                "CallNum": {
+                    "min": 3,
+                    "max": 37
+                },
+                "DispNumScale": 0.3,
+                "RespNumScale": 0.3,
+                "type": "All911Vertices"
+            },
+            "EdgesParams": {
+                "type": "All911Edges"
+            },
+            "ConnectionsParams": {
+                "Connections911Params": {
+                    "connsPerVertex": 88,
+                    "psapsToErase": 1,
+                    "respsToErase": 2
+                },
+                "type": "Connections911"
+            },
+            "LayoutParams": {
+                "LayoutFiles": {
+                    "PSAPsListFileName": "psaps.json",
+                    "callersListFileName": "callers.json",
+                    "respondersListFileName": "responders.json"
+                },
+                "type": "Layout911"
+            },
+            "RecorderParams": {
+                "RecorderFiles": {
+                    "probedListFileName": "probed.json",
+                    "resultFileName": "out.json"
+                },
+                "type": "Xml911Recorder"
+            }
+        }
+    }
+}

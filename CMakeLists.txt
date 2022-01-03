@@ -10,7 +10,7 @@ find_package(spdlog CONFIG REQUIRED) # logging
 find_package(GTest CONFIG REQUIRED) # testing 
 
 # Add source to this project's executable.
-add_executable (graphitti simulator/main/src/main.cpp "3p/veque/include/veque.hpp")
+add_executable (graphitti simulator/main/src/main.cpp)
 target_compile_options(graphitti PUBLIC -fsycl -fsycl-targets=nvptx64-nvidia-cuda)
 target_link_options(graphitti PUBLIC -fsycl -fsycl-targets=nvptx64-nvidia-cuda)
 
