@@ -15,7 +15,6 @@
 // standard library stuff
 #include <filesystem> // directory manipulation
 
-
 /**
  *  @brief Graphitti entrypoint. Initializes logger, parses CLA, initializes and runs simulator loop.
  *  
@@ -47,7 +46,7 @@ int main(int argc, char **argv) {
 
         // initialize command line parser
         cxxopts::Options parser("graphitti", "An accelerated general graph simulator");
-        parser.add_options()("c,config", "Model parameters file, inside input/config/name.json",
+        parser.add_options()("c,config", "Model parameters file, inside input/configs/test-name/config.json",
                              cxxopts::value<std::string>())(
                 "i,input-saved-run",
                 "Resume the simulator with a serialized file that was generated previously from a config",
@@ -77,9 +76,11 @@ int main(int argc, char **argv) {
 
         //  TODO: parse the rest of the arguments into appropriate variables
 
-        // TODO: check if files truly exist; we will parse them with flatbuffers later
+        //  TODO: check if files truly exist; we will parse them with flatbuffers later
 
-        // TODO: create flatbuffers schema for sample input 
+        //  TODO: create flatbuffers schema for sample input
+
+
 
         //  TODO: rename log files to unique run name, so that they do not rewrite one another with the same name
 
