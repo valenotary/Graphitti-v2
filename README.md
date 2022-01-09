@@ -29,7 +29,7 @@ This project is an attempt to rewrite the UWB INL's [Graphitti](https://github.c
 
 # Why SYCL?
 It is a relatively new specification that enables single-source heterogeneous programming; in other words, there's no need for any other file extensions like `.cu` or `.cl`. It utilizes C++17 with no language extensions, and so feels more intuitive to program with for users that are not familiar with the specifics of accelerated programming models. Most importantly, SYCL aims to be cross-platform and ubuquitous among accelerated devices (i.e. not tied to any specific type of accelerator, so long as the backend is supported); For this particular repository, we focus on Windows/Linux support and only using a CUDA backend, so an NVIDIA device is required to run the simulator. The specific SYCL implementation we are working with is the [open-source oneAPI DPC++ compiler](https://github.com/intel/llvm).  
-As SYCL becomes more mature, and more implementations offer a wider variety platforms/backends, we expect to be able to have this simulator switch between different implementations with ease.
+As SYCL becomes more mature, and more implementations offer a wider variety platforms/backends, we expect to be able to have this simulator switch between different implementations with ease - or, better yet, have just one implementation that handles _all_ accelerated device types.
 
 # Build Guide
 
