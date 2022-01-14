@@ -5,8 +5,8 @@
 
 // vcpkg packages 
 #include <spdlog/spdlog.h> // logging
-#include <spdlog/sinks/stdout_color_sinks.h>
 #include <spdlog/sinks/basic_file_sink.h>
+#include <spdlog/sinks/stdout_color_sinks.h>
 
 #include <cxxopts.hpp> // command line parsing
 #include <veque.hpp> // vector alternative I wanna try out
@@ -37,7 +37,7 @@ int main(int argc, char **argv) {
             std::make_shared<spdlog::sinks::basic_file_sink_mt>(logs_dir.string() + "/general_logs.txt"));
         const auto combined_general_logger = std::make_shared<spdlog::logger>(
             "combined_general_logger", general_log_sinks.begin(), general_log_sinks.end());
-        spdlog::register_logger(combined_general_logger);
+        register_logger(combined_general_logger);
 
         // TODO: create additional logger sinks for different aspects of simulator, such as vertices and edges 
 
@@ -79,7 +79,6 @@ int main(int argc, char **argv) {
         //  TODO: check if files truly exist; we will parse them with flatbuffers later
 
         //  TODO: create flatbuffers schema for sample input
-
 
 
         //  TODO: rename log files to unique run name, so that they do not rewrite one another with the same name

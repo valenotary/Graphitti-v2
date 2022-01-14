@@ -10,12 +10,12 @@ find_package(spdlog CONFIG REQUIRED) # logging
 find_package(GTest CONFIG REQUIRED) # testing 
 
 # Add source to this project's executable.
-add_executable (graphitti simulator/main/src/main.cpp)
+add_executable (graphitti graphitti/main/src/main.cpp)
 target_compile_options(graphitti PUBLIC -fsycl -fsycl-targets=nvptx64-nvidia-cuda)
 target_link_options(graphitti PUBLIC -fsycl -fsycl-targets=nvptx64-nvidia-cuda)
 
 # subdirectories 
-add_subdirectory(./simulator/test_directory)
+add_subdirectory(./graphitti/test_directory)
 add_subdirectory(./3p)
 
 # includes 
@@ -48,3 +48,4 @@ target_link_libraries(graphitti PRIVATE
 
 
 # TODO: Add tests and install targets if needed.
+# TODO: for flatbuffers, automate the call to flatc and populating the generated headers in the appropriate directories 

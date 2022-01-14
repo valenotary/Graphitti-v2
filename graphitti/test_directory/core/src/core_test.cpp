@@ -1,5 +1,3 @@
 #include <core_test.hpp>
 
-int return5() {
-	return 5;
-}
+int return5() { return 5; }
